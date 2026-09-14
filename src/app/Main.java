@@ -31,7 +31,7 @@ public class Main {
 
             switch (choice) {
                 case "0" -> runnig = false;
-                case "1" -> openAccount(scanner , bankService);
+                case "1" -> openAccount(scanner,bankService);
 
                 case "2" -> deposite(scanner);
                 case "3" -> withdraw(scanner);
