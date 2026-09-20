@@ -1,5 +1,14 @@
 package service;
 
- public interface BankService {
-   String openAccount(String name,String email,String accountType);
+import domain.Account;
+
+import java.util.List;
+
+public interface BankService {
+   String openAccount(String name,String email,String accountType,Double initial);
+   List<Account>ListAccount();
+
+   void deposit(String accountNumber, Double amount, String note);
+
+
 }
