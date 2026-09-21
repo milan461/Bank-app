@@ -1,26 +1,31 @@
 package service.impl;
 
 import domain.Account;
+import domain.Customer;
 import domain.Transaction;
 import domain.Type;
 import repository.AccountRepository;
+import repository.CustomerRepository;
 import repository.TransactionRepository;
 import service.BankService;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Locale.filter;
 
 public class BankServiceImpl implements BankService{
     private final AccountRepository accountRepository=new AccountRepository();
     private final TransactionRepository transactionRepository=new TransactionRepository();
+    private final CustomerRepository customerRepository=new CustomerRepository();
 
 
     @Override
     public String openAccount(String name, String email, String accountType,Double initial) {
         String customerId= UUID.randomUUID().toString();
+        Customer c=new Customer(customerId,name, email);
+        customerRepository.save(c);
         String accountNumber=getAccountNumber();
 
         Account account=new Account(accountNumber,customerId,0.0,accountType);
@@ -78,7 +83,32 @@ public class BankServiceImpl implements BankService{
         TransactionRepository.add(toTransaction);
     }
 
-    private String getAccountNumber(){
+    @Override
+    public List<Transaction> getStatement(String accountNumber) {
+        return transactionRepository.findByAccount(accountNumber).stream()
+                .sorted(Comparator.comparing(Transaction::getTimestamp))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Account> searchAccountByName(String q) {
+        String query =(q==null)?"":q.toLowerCase();
+//        List<Account>result=new ArrayList<>();
+//        for(Customer c:customerRepository.findAll()) {
+//            if (c.getName().toLowerCase().contains(query))
+//                result.addAll(accountRepository.findByCustomerId(c.getId()));
+//        }
+//        result.sort(Comparator.comparing(Account::getAccountNumber));
+//        return result;
+        return customerRepository.findAll().stream()
+        .filter(c -> c.getName().toLowerCase().contains(query))
+                .flatMap(c -> accountRepository.findByCustomerId(c.getId()).stream())
+                .sorted(Comparator.comparing(Account::getAccountNumber))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getAccountNumber(){
         int size=accountRepository.findAll().size()+1;
         String accountNumber=String.format("AC%06d",size);
         return accountNumber;

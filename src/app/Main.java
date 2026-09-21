@@ -37,9 +37,9 @@ public class Main {
                 case "2" -> deposit(scanner,bankService);
                 case "3" -> withdraw(scanner,bankService);
                 case "4" -> transfer(scanner,bankService);
-                case "5" -> statement(scanner);
+                case "5" -> statement(scanner,bankService);
                 case "6" -> listAccount(scanner,bankService);
-                case "7" -> searchAccount(scanner);
+                case "7" -> searchAccount(scanner,bankService);
             }
         }
     }
@@ -61,7 +61,7 @@ public class Main {
                 }
 
                 System.out.println("Account created successfully!");
-                System.out.println("Your account number is: " + accountNumber);
+                System.out.println("Your account number is: " + accountNumber );
             }
 
             private static void deposit(Scanner scanner,BankService bankService ){
@@ -97,8 +97,13 @@ public class Main {
 
             }
 
-            private static void statement (Scanner scanner){
-
+            private static void statement (Scanner scanner,BankService bankService){
+                System.out.println("Account Number :");
+               String account=scanner.nextLine().trim();
+               bankService.getStatement(account).forEach(t->{
+                   System.out.println(t.getTimestamp()+" | "+ t.getType()+ " | "+
+                           t.getAmount() +" | " + t.getNote());
+               });
             }
 
 
@@ -109,7 +114,11 @@ public class Main {
                     }
             }
 
-            private static void searchAccount (Scanner scanner){
+            private static void searchAccount (Scanner scanner,BankService bankService){
+                System.out.println("Customer name contains :");
+                String q=scanner.nextLine().trim();
+                bankService.searchAccountByName(q).forEach(account ->
+                        System.out.println(account.getAccountNumber()+" | "+ account.getAccountType()+" | "+account.getBalance()));
             }
          }
 

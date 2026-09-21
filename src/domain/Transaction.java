@@ -7,15 +7,15 @@ public class Transaction {
     private Type type;
     private String accountNumber;
     private Double amount;
-    private LocalDateTime timetamp;
+    private LocalDateTime timestamp;
     private String note;
 
-    public Transaction(String id, Type type, String accountNumber, Double amount, LocalDateTime timetamp, String note) {
+    public Transaction(String id, Type type, String accountNumber, Double amount, LocalDateTime timestamp, String note) {
         this.id = id;
         this.type = type;
         this.accountNumber = accountNumber;
         this.amount = amount;
-        this.timetamp = timetamp;
+        this.timestamp = timestamp;
         this.note = note;
     }
 
@@ -51,12 +51,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public LocalDateTime getTimetamp() {
-        return timetamp;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimetamp(LocalDateTime timetamp) {
-        this.timetamp = timetamp;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getNote() {
