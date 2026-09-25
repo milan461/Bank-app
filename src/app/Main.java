@@ -51,9 +51,10 @@ public class Main {
                 System.out.println("Accunt Type(Current/Saving) : ");
                 String acctype=scanner.nextLine().trim();
                 System.out.println("Intial Deposit: ");
-                String depositStr=scanner.nextLine().trim();
-                Double initial=Double.valueOf(depositStr) ;
-                //bankService.openAccount(name,email,acctype,initial);
+                String amountStr=scanner.nextLine().trim();
+                if(amountStr.isBlank()) amountStr="0";
+                Double initial=Double.valueOf(amountStr) ;
+
                 String accountNumber = bankService.openAccount(name, email, acctype, initial);
 
                 if(initial>0){
